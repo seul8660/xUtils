@@ -1,15 +1,7 @@
 package com.base.utils;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import com.base.xBase;
-import com.orhanobut.hawk.Hawk;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;

@@ -44,16 +44,15 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.afollestad:ason:1.4.16'
-    implementation 'com.github.yilylong:CBDialog:v1.0.6'
+    api 'com.afollestad:ason:1.4.16'
+    api 'com.github.yilylong:CBDialog:v1.0.6'
 
-    implementation "com.orhanobut:hawk:2.0.1"
 
     /*rv适配器*/
-    implementation 'com.zhy:base-rvadapter:3.0.3'
+    api 'com.zhy:base-rvadapter:3.0.3'
 
     /*logger*/
-    implementation 'com.orhanobut:logger:2.2.0'
+    api 'com.orhanobut:logger:2.2.0'
 
 }
 
