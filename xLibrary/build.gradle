@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 26
 
 
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
@@ -30,29 +30,45 @@ configurations.all {
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             if (!requested.name.startsWith("multidex")) {
-                details.useVersion '28.0.0'
+                details.useVersion '26.1.0'
             }
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     api 'com.afollestad:ason:1.4.16'
-    api 'com.github.yilylong:CBDialog:v1.0.6'
-
-
+    /*自定义dialog基础库*/
+    api project(':CBDialoglibrary')
+    /*仿ios选择器*/
+    api project(':pickerview')
+    /*key-value 数据库*/
+    //implementation "com.orhanobut:hawk:2.0.1"
     /*rv适配器*/
     api 'com.zhy:base-rvadapter:3.0.3'
-
     /*logger*/
     api 'com.orhanobut:logger:2.2.0'
+    /*下拉刷新控件*/
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-12'
+    /*fragment 管理器*/
+    api 'me.yokeyword:fragmentation:1.3.6'
+    /*状态栏*/
+    api 'com.jaeger.statusbarutil:library:1.4.0'
+    /*Popup封装*/
+    api project(':EasyPopup')
+    api project(':RWidgetHelper')
+    /*导航栏*/
+    api project(':FlycoTabLayout_Lib')
+    /*倒计时*/
+    api project(':CountdownView')
+
+    api project(':AutoFlowLayout')
 
 }
 

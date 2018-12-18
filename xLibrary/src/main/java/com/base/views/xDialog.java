@@ -1,346 +1,306 @@
 package com.base.views;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.base.utils.xHandler;
 import com.base.utils.xUtils;
 import com.base.utils.xViewHelper;
 import com.example.base.R;
+import com.orhanobut.logger.Logger;
 import com.zhl.cbdialog.CBDialogBuilder;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.base.utils.xUtils.convertToStr;
+import static com.base.utils.xUtils.convertToInt;
+import static com.base.utils.xUtils.getWindowHeight;
 import static com.base.utils.xUtils.setMargins;
 import static com.base.utils.xUtils.value2dp;
+import static com.zhl.cbdialog.CBDialogBuilder.DIALOG_STYLE_NORMAL;
 
-public class xDialog extends CBDialogBuilder{
+public class xDialog {
 
-    private static xDialog cbDialogBuilder;
-    public static int ICON_SUCCESS = R.drawable.icon_dialog_success;
-    public static int ICON_ERROR = R.drawable.icon_dialog_error;
-    public static int ICON_INFO = R.drawable.icon_dialog_msg;
-    public Dialog dialog;
-    private float alpha = 1.0f;
-    private onDialogbtnClickListener listener;
-    private Boolean isDismiss = true;
-    private static Context mContext;
-
-    private xDialog(Context context) {
-        super(context);
-        if(dialog!=null){
-            dialog.dismiss();
-            dialog=null;
-        }
-    }
-
-    private xDialog(Context context, int layoutStyle, float widthcoefficient, boolean dimEnable) {
-
-        super(context, layoutStyle, false, widthcoefficient, 1.0F, dimEnable);
-        if(dialog!=null){
-            dialog.dismiss();
-            dialog=null;
-        }
-    }
-
-
-    public static xDialog getInstance(Activity activity,onDialogbtnClickListener listener){
-
-            mContext = activity;
-            cbDialogBuilder = new xDialog(activity,DIALOG_STYLE_NORMAL,0.8f,true);
-            cbDialogBuilder.listener = listener;
-            cbDialogBuilder
-                    .setDialogAnimation(R.style.dialog_anim_style)
-                    .showIcon(false)
-                    .setTitle(null)
-                    .setConfirmButtonText("确定")
-                    .showCancelButton(true)
-                    .setCancelButtonText("取消")
-                    .setButtonClickListener(cbDialogBuilder.isDismiss,listener);
-
-        TextView view =cbDialogBuilder.getView(com.zhl.cbdialog.R.id.dialog_title);
-        view.setTypeface(Typeface.DEFAULT_BOLD);
-        setMargins(view, xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10));
-        return cbDialogBuilder;
-    }
-
-
-    public static xDialog getInstance(Activity activity,float width){
-
-        mContext = activity;
-
-        cbDialogBuilder = new xDialog(activity,DIALOG_STYLE_NORMAL,width,true);
-
-        cbDialogBuilder.listener = new onDialogbtnClickListener() {
-            @Override
-            public void onDialogbtnClick(Context context, Dialog dialog, int i) {
-
-            }
-        };
-        cbDialogBuilder
-                .setDialogAnimation(R.style.dialog_anim_style)
-                .showIcon(false)
-                .setTitle(null)
-                .setConfirmButtonText("确定")
-                .showCancelButton(true)
-                .setCancelButtonText("取消")
-                .setButtonClickListener(cbDialogBuilder.isDismiss,cbDialogBuilder.listener);
-
-        TextView view =cbDialogBuilder.getView(com.zhl.cbdialog.R.id.dialog_title);
-        view.setTypeface(Typeface.DEFAULT_BOLD);
-        setMargins(view,xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10));
-        return cbDialogBuilder;
-
-
-    }
+    private static xDialog xDialog = null;
+    private Activity mContext;
+    private CBDialogBuilder builder;
 
     public static xDialog getInstance(Activity activity){
 
-        mContext = activity;
+       // if(xDialog!=null&&xDialog.dialog!=null) xDialog.dialog.dismiss();
 
-        cbDialogBuilder = new xDialog(activity,DIALOG_STYLE_NORMAL,0.8f,true);
-        cbDialogBuilder.listener = new onDialogbtnClickListener() {
-            @Override
-            public void onDialogbtnClick(Context context, Dialog dialog, int i) {
+        xDialog = new xDialog();
+        xDialog.mContext = activity;
 
-            }
-        };
-        cbDialogBuilder
-                .setDialogAnimation(R.style.dialog_anim_style)
-                .showIcon(false)
-                .setTitle(null)
-                .setConfirmButtonText("确定")
-                .showCancelButton(true)
-                .setCancelButtonText("取消")
-                .setButtonClickListener(true,cbDialogBuilder.listener);
-
-        TextView view =cbDialogBuilder.getView(com.zhl.cbdialog.R.id.dialog_title);
-        view.setTypeface(Typeface.DEFAULT_BOLD);
-        setMargins(view,xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10),xUtils.value2dp(10));
-        return cbDialogBuilder;
-    }
-
-    public xDialog setDismiss(Boolean dismiss){
-        cbDialogBuilder.isDismiss = dismiss;
-        cbDialogBuilder.setButtonClickListener(dismiss,listener);
-        return cbDialogBuilder;
-    }
-
-    public void setAmin(int Res){
-        cbDialogBuilder.setDialogAnimation(Res);
-
-    }
-
-    public void showWarn(String msg){
-        cbDialogBuilder.showIcon(false);
-        TextView textView = cbDialogBuilder.getView(R.id.dialog_message);
-        textView.setPadding(value2dp(10),value2dp(20),value2dp(10),value2dp(10));
-        cbDialogBuilder.showCancelButton(false);
-        cbDialogBuilder.setMessage(msg);
-        cbDialogBuilder.setDismiss(true);
-        try{
-            getDialog().show();
-        }catch (Exception e){
-
-        }
-
-    }
-
-    public void show(String msg,int icon){
-        cbDialogBuilder.setIcon(icon);
-        cbDialogBuilder.setMessage(msg);
-        cbDialogBuilder.setDismiss(true);
-        try{
-            getDialog().show();
-        }catch (Exception e){
-
-        }
-    }
-
-    public void show(String msg){
-        cbDialogBuilder.showIcon(false);
-        cbDialogBuilder.setMessage(msg);
-
-        TextView textView = cbDialogBuilder.getView(R.id.dialog_message);
-        textView.setPadding(value2dp(10),value2dp(20),value2dp(10),value2dp(10));
-        cbDialogBuilder.setDismiss(true);
-        try{
-            getDialog().show();
-        }catch (Exception e){
-
-        }
-    }
-
-
-
-    public xDialog setBackground(){
-        cbDialogBuilder.setDialogBackground(R.color.colourless);
-       return cbDialogBuilder;
-    }
-
-    public xDialog setAlpha(float alpha){
-
-        cbDialogBuilder.alpha = alpha;
-
-        return cbDialogBuilder;
-
-    }
-
-    private static List<Dialog> dialogList = new ArrayList<>();
-    public Dialog getDialog(){
-        if(dialog==null) dialog = cbDialogBuilder.create();
-
-        dialogList.add(dialog);
-
-        return dialog;
-
-
+        return xDialog;
     }
 
     public static void dismiss(){
 
-        Iterator<Dialog> it = dialogList.iterator();
+        if(xDialog!=null&&xDialog.dialog!=null&&!xDialog.mContext.isFinishing()) xDialog.dialog.dismiss();
 
-        while (it.hasNext()){
+    }
 
-            Dialog dialog = it.next();
+    public xDialog create(){
 
-            try{
-                dialog.dismiss();
-                dialog.cancel();
-            }
-            catch (Exception e){
+        builder = new CBDialogBuilder(mContext,layoutStyle,isSystemAlert,width,alpha,dimEnable);
 
-            }
+        if(clickListener==null) {
+            clickListener = new CBDialogBuilder.onDialogbtnClickListener() {
+                @Override
+                public void onDialogbtnClick(Context context, Dialog dialog, int i) {
 
-            dialog = null;
-            it.remove();
+                }
+            };
         }
 
-    }
-
-    public void showView(View view){
-
-        if(cbDialogBuilder!=null){
-            ViewGroup viewGroup = cbDialogBuilder.getView(R.id.dialog_msg_layout);
-            viewGroup.removeAllViews();
-            cbDialogBuilder.setDismiss(false);
-            if(view.getParent()!=null){
-               ViewGroup group = (ViewGroup) view.getParent();
-                group.removeView(view);
-            }
-            cbDialogBuilder.setView(view);
-            try{
-                getDialog().show();
-            }catch (Exception e){
-
-            }
-
-        }
-
-    }
+        builder.setButtonClickListener(isDismiss,clickListener);
 
 
+        if(title.equals("")){
 
-
-
-
-
-
-
-
-
-    public xDialog setOnDialogClick(onDialogbtnClickListener listener){
-
-        cbDialogBuilder.setButtonClickListener(cbDialogBuilder.isDismiss,listener);
-
-        return cbDialogBuilder;
-    }
-
-
-    public xDialog setCancelButton(boolean isshow){
-        cbDialogBuilder.showCancelButton(isshow);
-        return cbDialogBuilder;
-    }
-
-    public xDialog setConfirmButton(boolean isshow){
-        cbDialogBuilder.showConfirmButton(isshow);
-        return cbDialogBuilder;
-    }
-    public xDialog setTitle(Object object){
-        TextView view =getView(com.zhl.cbdialog.R.id.dialog_title);
-        if(object!=null){
-            view.setVisibility(View.VISIBLE);
-            view.setText(convertToStr(object));
+            builder.setTitle(null);
         }
         else{
-            view.setVisibility(View.GONE);
+
+            TextView view =builder.getView(com.zhl.cbdialog.R.id.dialog_title);
+            view.setTypeface(titleTypeface);
+            builder.setTitle(title);
         }
 
-        return cbDialogBuilder;
+        if(cancelBtn.equals("")){
+            builder.showCancelButton(false);
+        }
+        else{
+            builder.showCancelButton(true);
+
+            builder.setCancelButtonText(cancelBtn);
+
+        }
+
+        if(confirmBtn.equals("")){
+            builder.showConfirmButton(false);
+        }
+        else{
+            builder.showConfirmButton(true);
+            builder.setConfirmButtonText(confirmBtn);
+        }
+
+        if(icon==0){
+            builder.showIcon(false);
+        }
+        else{
+            builder.showIcon(true);
+
+            builder.setCustomIcon(icon);
+
+        }
+
+        if(!text.equals("")){
+            TextView textView = builder.getView(R.id.dialog_message);
+            textView.setText(text);
+        }
+
+
+        if(view!=null){
+
+            ViewGroup viewGroup = builder.getView(R.id.dialog_msg_layout);
+            viewGroup.removeAllViews();
+            if(view.getParent()!=null){
+                ViewGroup group = (ViewGroup) view.getParent();
+                group.removeView(view);
+            }
+
+            builder.setView(view);
+        }
+
+        /*设置无动画*/
+        builder.setDialogAnimation(R.style.dialog_anim_style);
+
+
+        if(!outSideClickDismiss){
+
+            builder.setCancelable(false);
+            builder.setTouchOutSideCancelable(false);
+
+        }
+
+
+        dialog = builder.create();
+
+        if(height!=0f){
+            Window window = dialog.getWindow();
+
+            if(window!=null){
+                window.getAttributes().height = convertToInt(height*getWindowHeight());
+                window.setAttributes(window.getAttributes());
+
+            }
+
+        }
+
+        return xDialog;
+    }
+
+    public void show(){
+
+        /*防止忘记create*/
+        if(dialog==null){
+            create();
+        }
+
+        try{
+            dialog.show();
+        }catch (Exception e){
+            Logger.d(e.toString());
+        }
+    }
+
+    private float alpha = 1.0f,width = 0.9f,height = 0f;
+    private int layoutStyle = DIALOG_STYLE_NORMAL;
+    private Boolean  isSystemAlert = false,dimEnable = true;
+    private Dialog dialog = null;
+    private Boolean isDismiss = true;
+    private CBDialogBuilder.onDialogbtnClickListener clickListener;
+
+   /*dialog 标题头*/
+    private String title = "";
+    public xDialog setTitle(String text){
+        this.title =text;
+        return xDialog;
+    }
+
+    /*dialog 取消按钮*/
+    private String cancelBtn = "取消";
+    public xDialog setCancelBtn(String text){
+        this.cancelBtn =text;
+        return xDialog;
+    }
+
+    /*dialog 确认按钮*/
+    private String confirmBtn = "确定";
+    public xDialog setConfirmBtn(String text){
+        this.confirmBtn =text;
+        return xDialog;
+    }
+
+    /*dialog 是否有图标*/
+    private int icon = 0;
+    public xDialog setIcon(int icon){
+        this.icon =icon;
+        return xDialog;
+    }
+
+    /*dialog 透明度 默认1.0f*/
+    public xDialog setAlpha(float alpha){
+        this.alpha =alpha;
+        return xDialog;
+    }
+
+    /*dialog 宽度占屏百分比 默认0.9f*/
+    public xDialog setWidth(float width){
+        this.width =width;
+        return xDialog;
+    }
+
+    /*dialog 高度占屏百分比 */
+    public xDialog setHeight(float height){
+        this.height = height;
+
+        return xDialog;
+    }
+
+    /*dialog 按钮是否直接关闭dialog */
+    public xDialog setBtnClickDismiss(Boolean b){
+        this.isDismiss = b;
+
+        return xDialog;
+    }
+
+    /*dialog 按钮监听 */
+    public xDialog setOnBtnClick(CBDialogBuilder.onDialogbtnClickListener onBtnClick){
+
+        this.clickListener = onBtnClick;
+
+        return xDialog;
+
+    }
+
+    /*dialog msg */
+    private String text="";
+    public xDialog setText(String text){
+
+        this.text = text;
+
+        return xDialog;
+    }
+
+    /*dialog view */
+    private View view ;
+    public xDialog setView(View view){
+
+        this.view =view;
+
+        setBtnClickDismiss(false);
+
+
+        return xDialog;
+    }
+
+    /*dialog 点击外部关闭 默认false */
+    private boolean outSideClickDismiss = false;
+    public xDialog setOutSideClickDismiss(boolean outSideClickDismiss) {
+        this.outSideClickDismiss = outSideClickDismiss;
+
+        return xDialog;
+    }
+
+    /*dialog 标题字体 默认加粗 */
+    private Typeface titleTypeface = Typeface.DEFAULT_BOLD;
+    public xDialog setTitleTextTypeface(Typeface typeface){
+
+        titleTypeface = typeface;
+
+        return xDialog;
+    }
+
+    /*默认提示dialog*/
+    public xDialog setWarm(String msg){
+
+        setIcon(0);
+        setWidth(0.7f);
+        setTitle("");
+        setText(msg);
+        setBtnClickDismiss(true);
+        setOutSideClickDismiss(false);
+        return xDialog;
+    }
+
+    /*默认自定义dialog*/
+    public xDialog setCustomView(View view){
+        setIcon(0);
+        setCancelBtn("");
+        setConfirmBtn("");
+        setBtnClickDismiss(true);
+        setOutSideClickDismiss(false);
+        setText("");
+        setTitle("");
+        setView(view);
+        return xDialog;
     }
 
 
-    public xDialog setTiTleType(Typeface typeface){
-        TextView view =cbDialogBuilder.getView(com.zhl.cbdialog.R.id.dialog_title);
-        view.setTypeface(typeface);
-        return cbDialogBuilder;
-    }
-
-    public xDialog setIcon(int id){
-        cbDialogBuilder.setCustomIcon(id);
-        cbDialogBuilder.showIcon(true);
-        ImageView view = cbDialogBuilder.getView(com.zhl.cbdialog.R.id.custom_icon);
-        setMargins(view,20,20,20,20);
-        view.setImageResource(id);
-        return cbDialogBuilder;
-
-    }
-
-    public xDialog setOutSideClickDismiss(Boolean dismiss){
-        cbDialogBuilder.setCancelable(false);
-        cbDialogBuilder.setTouchOutSideCancelable(dismiss);
-
-        return cbDialogBuilder;
-    }
-
-
-    public xDialog setBackground(int color){
-        View rootView = cbDialogBuilder.getView(com.zhl.cbdialog.R.id.cb_dialog_root_layout);
-        rootView.setBackgroundColor(color);
-        return cbDialogBuilder;
-    }
-
-
-
-    public xDialog setConfirmText(String text){
-
-        cbDialogBuilder.setConfirmButtonText(text);
-
-        return cbDialogBuilder;
-    }
-
-
-    public xDialog setCancelText(String text){
-
-        cbDialogBuilder.setCancelButtonText(text);
-
-        return cbDialogBuilder;
-    }
-
-
-
+    /*加载框*/
     private static List<Dialog> dialogs =new ArrayList<>();
+
     public void showLoading(String msg){
 
         disLoading();
@@ -349,37 +309,47 @@ public class xDialog extends CBDialogBuilder{
         TextView msgText = helper.getView(R.id.text);
         if(msg.equals("")) msgText.setVisibility(View.GONE);
         else msgText.setText(msg);
-        if(cbDialogBuilder!=null){
-            ViewGroup viewGroup = cbDialogBuilder.getView(R.id.dialog_msg_layout);
-            viewGroup.removeAllViews();
-            cbDialogBuilder.setConfirmButton(false).setOutSideClickDismiss(false).setCancelButton(false).setBackground(mContext.getResources().getColor(R.color.colourless)).setDismiss(false);
-            if(helper.getConvertView().getParent()!=null){
-                ViewGroup group = (ViewGroup) helper.getConvertView().getParent();
-                group.removeView(helper.getConvertView());
-            }
-            cbDialogBuilder.setView(helper.getConvertView());
 
-            final Dialog dialog =  cbDialogBuilder.create();
+        if(builder==null){
+
+            builder = new CBDialogBuilder(mContext,layoutStyle,isSystemAlert,1.0f,1.0f,true);
+
+            ViewGroup viewGroup = builder.getView(R.id.dialog_msg_layout);
+            viewGroup.removeAllViews();
+            builder
+                    .setTitle(null)
+                    .showCancelButton(false)
+                    .showConfirmButton(false)
+                    .setCancelable(false)
+                    .showIcon(false)
+                    .setDialogAnimation(R.style.dialog_anim_style)
+                    .setTouchOutSideCancelable(false);
+
+
+            View rootView = builder.getView(com.zhl.cbdialog.R.id.cb_dialog_root_layout);
+            rootView.setBackgroundColor(mContext.getResources().getColor(R.color.colourless));
+
+            if(helper.getConvertView().getParent()!=null){
+                    ViewGroup group = (ViewGroup) helper.getConvertView().getParent();
+                    group.removeView(helper.getConvertView());
+                }
+            builder.setView(helper.getConvertView());
+
+            final Dialog dialog =  builder.create();
 
             try {
-                dialog.getWindow().setDimAmount(0f);
-                dialog.show();
-                dialogs.add(dialog);
-                xHandler.putTask(15000, new xHandler.CallBack() {
-                    @Override
-                    public void onBack() {
-                        dialog.dismiss();
-                    }
-                });
-            }catch (Exception e){
-
-
-
-            }
-
-
-
-
+                    //dialog.getWindow().setDimAmount(0.4f);
+                    dialog.show();
+                    dialogs.add(dialog);
+                    xHandler.putTask(15000, new xHandler.CallBack() {
+                        @Override
+                        public void onBack() {
+                            dialog.dismiss();
+                        }
+                    });
+                }catch (Exception e){
+                Logger.d(e.toString());
+                }
 
 
         }
@@ -397,17 +367,16 @@ public class xDialog extends CBDialogBuilder{
             try{
                 dialog.dismiss();
                 dialog.cancel();
-            }catch (Exception e){}
+            }catch (Exception e){
+                Logger.d(e.toString());
+            }
 
-
-            dialog = null;
 
             it.remove();
 
         }
 
     }
-
 
 
 }

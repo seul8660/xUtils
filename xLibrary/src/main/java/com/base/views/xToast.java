@@ -2,6 +2,7 @@ package com.base.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -59,7 +60,13 @@ public class xToast {
             toast.setGravity(Gravity.CENTER,0,0);
             LinearLayout toastView = (LinearLayout) toast.getView();
             toastView.setBackgroundResource(R.drawable.xtoast_bg);
-            toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            if(Build.VERSION.SDK_INT==Build.VERSION_CODES.O){
+                toastView.setPadding(value2dp(20),value2dp(20),value2dp(20),value2dp(20));
+            }
+            else{
+                toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            }
+
             TextView message = ((TextView) toastView.findViewById(android.R.id.message));
 
             message.setTextColor(Color.parseColor("#ffffff"));
@@ -95,7 +102,12 @@ public class xToast {
             toast.setGravity(Gravity.CENTER,0,0);
             LinearLayout toastView = (LinearLayout) toast.getView();
             toastView.setBackgroundResource(R.drawable.xtoast_bg);
-            toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            if(Build.VERSION.SDK_INT==Build.VERSION_CODES.O){
+                toastView.setPadding(value2dp(20),value2dp(0),value2dp(20),value2dp(20));
+            }
+            else{
+                toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            }
             TextView message = ((TextView) toastView.findViewById(android.R.id.message));
             message.setTextColor(Color.parseColor("#ffffff"));
 
@@ -137,7 +149,12 @@ public class xToast {
             toast.setGravity(Gravity.CENTER,0,0);
             LinearLayout toastView = (LinearLayout) toast.getView();
             toastView.setBackgroundResource(R.drawable.xtoast_bg);
-            toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            if(Build.VERSION.SDK_INT==Build.VERSION_CODES.O){
+                toastView.setPadding(value2dp(20),value2dp(0),value2dp(20),value2dp(20));
+            }
+            else{
+                toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            }
             TextView message = ((TextView) toastView.findViewById(android.R.id.message));
             message.setTextColor(Color.parseColor("#ffffff"));
 
@@ -177,7 +194,12 @@ public class xToast {
             toast.setGravity(Gravity.CENTER,0,0);
             LinearLayout toastView = (LinearLayout) toast.getView();
             toastView.setBackgroundResource(R.drawable.xtoast_bg);
-            toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            if(Build.VERSION.SDK_INT==Build.VERSION_CODES.O){
+                toastView.setPadding(value2dp(20),value2dp(0),value2dp(20),value2dp(20));
+            }
+            else{
+                toastView.setPadding(value2dp(5),value2dp(5),value2dp(5),value2dp(5));
+            }
             TextView message = ((TextView) toastView.findViewById(android.R.id.message));
             message.setTextColor(Color.parseColor("#ffffff"));
 

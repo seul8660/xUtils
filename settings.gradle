@@ -1,1 +1,1 @@
-include ':app', ':xLibrary'
+include ':app', ':xLibrary', ':CountdownView', ':EasyPopup', ':FlycoTabLayout_Lib', ':AutoFlowLayout', ':RWidgetHelper', ':CBDialoglibrary', ':wheelview', ':pickerview'

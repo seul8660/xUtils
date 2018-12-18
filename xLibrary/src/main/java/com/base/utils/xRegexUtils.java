@@ -74,6 +74,29 @@ public class xRegexUtils {
     }
 
 
+
+    public static boolean checkTel(String code,String mobile){
+
+        if(code.equals("+86")){
+
+            String regex = "(\\+\\d+)?1[34578]\\d{9}$";
+            return Pattern.matches(regex, mobile);
+        }
+
+        else if(code.equals("+886")){
+
+            String regex = "(\\+\\d+)?09\\d{8}$";
+            return Pattern.matches(regex, mobile);
+        }
+        else{
+
+            return !mobile.equals("");
+        }
+
+
+    }
+
+
     public static boolean checkTwTel(String mobile) {
         String regex = "(\\+\\d+)?09\\d{8}$";
         return Pattern.matches(regex, mobile);
@@ -89,7 +112,7 @@ public class xRegexUtils {
      * @return 验证成功返回true，验证失败返回false
      */
     public static boolean checkTel(String mobile) {
-        String regex = "(\\+\\d+)?1[3458]\\d{9}$";
+        String regex = "(\\+\\d+)?1[34578]\\d{9}$";
         return Pattern.matches(regex, mobile);
     }
 

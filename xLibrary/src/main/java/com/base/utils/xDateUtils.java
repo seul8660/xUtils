@@ -200,6 +200,7 @@ public class xDateUtils {
     }
 
 
+    /*获取六个小时前的日期*/
     public static Date getLastSixTime(){
 
          Date currentTime = new Date();
