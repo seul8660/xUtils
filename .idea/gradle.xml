@@ -17,7 +17,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/pickerview" />
             <option value="$PROJECT_DIR$/wheelview" />
-            <option value="$PROJECT_DIR$/xLibrary" />
+            <option value="$PROJECT_DIR$/xutils" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
