@@ -35,6 +35,7 @@ public class xDialog {
 
     public static xDialog getInstance(Activity activity){
 
+
        // if(xDialog!=null&&xDialog.dialog!=null) xDialog.dialog.dismiss();
 
         xDialog = new xDialog();
@@ -45,10 +46,12 @@ public class xDialog {
 
     public static void dismiss(){
 
-        if(xDialog!=null&&xDialog.dialog!=null&&!xDialog.mContext.isFinishing()) xDialog.dialog.dismiss();
+        if(curDialog!=null&&curDialog.dialog!=null&&!curDialog.mContext.isFinishing()) curDialog.dialog.dismiss();
 
     }
 
+
+    private static xDialog curDialog;
     public xDialog create(){
 
         builder = new CBDialogBuilder(mContext,layoutStyle,isSystemAlert,width,alpha,dimEnable);
@@ -156,6 +159,10 @@ public class xDialog {
         if(dialog==null){
             create();
         }
+
+        if(curDialog!=null) curDialog.dialog.dismiss();
+
+        curDialog = xDialog;
 
         try{
             dialog.show();
